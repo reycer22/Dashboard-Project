@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Dashboard de Marketing</h1>
+
+<h2 style="margin-top:40px;">Ventas Mensuales</h2>
+
+<canvas id="ventasChart" width="800" height="300"></canvas>
+
+<script src="/static/js/chart.js"></script>
+
+
+<div class="cards">
+
+  <div class="card">
+    <h3>Ventas Anuales</h3>
+    <p>$1.200.000</p>
+  </div>
+
+  <div class="card">
+    <h3>Crecimiento</h3>
+    <p>+18%</p>
+  </div>
+
+  <div class="card">
+    <h3>Presencia en Redes</h3>
+    <p>Alta</p>
+  </div>
+
+  <div class="card highlight">
+    <h3>Público Objetivo</h3>
+    <p>60% Mujeres</p>
+  </div>
+
+</div>
+{% endblock %}
+
+
+

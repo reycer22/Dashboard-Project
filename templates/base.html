@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Marketing Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="logo">MKT</h2>
+    <ul class="menu">
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="#">Empresas</a></li>
+      <li><a href="#">Estrategias</a></li>
+      <li><a href="/admin">Administración</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="content">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+</div>
+
+</body>
+</html>
