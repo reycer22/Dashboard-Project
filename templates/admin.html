@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Administración de Datos</h1>
+
+<div class="card">
+  <form method="POST">
+
+    <label>Mes</label>
+    <input type="text" name="mes" required>
+
+    <label>Ventas</label>
+    <input type="number" name="ventas" required>
+
+    <label>Crecimiento (%)</label>
+    <input type="number" name="crecimiento" required>
+
+    <label>Instagram (%)</label>
+    <input type="number" name="instagram" required>
+
+    <label>TikTok (%)</label>
+    <input type="number" name="tiktok" required>
+
+    <label>Facebook (%)</label>
+    <input type="number" name="facebook" required>
+
+    <button type="submit">Guardar</button>
+
+  </form>
+</div>
+
+{% endblock %}

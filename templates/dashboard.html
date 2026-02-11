@@ -1,6 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<div class="card">
+  <h3>Datos Registrados</h3>
+  <table>
+    <tr>
+      <th>Mes</th>
+      <th>Ventas</th>
+      <th>Crecimiento</th>
+    </tr>
+    {% for fila in datos %}
+    <tr>
+      <td>{{ fila[1] }}</td>
+      <td>{{ fila[2] }}</td>
+      <td>{{ fila[3] }}%</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
 <h1>Dashboard de Marketing</h1>
 
 <h2 style="margin-top:40px;">Ventas Anuales</h2>
