@@ -26,6 +26,11 @@
 
 <canvas id="ventasChart" width="800" height="300"></canvas>
 
+<script>
+  const datosBackend = {{ datos | tojson }};
+  console.log("Datos desde Flask:", datosBackend);
+</script>
+
 <script src="/static/js/chart.js"></script>
 
 <h3>Público Objetivo</h3>
@@ -42,23 +47,26 @@
 
   <div class="card">
     <h3>Ventas Anuales</h3>
-    <p>$1.200.000</p>
+    <p id="totalVentas"></p>
   </div>
 
   <div class="card">
-    <h3>Crecimiento</h3>
-    <p>+18%</p>
+    <h3>Crecimiento Promedio</h3>
+    <p id="promCrecimiento"></p>
   </div>
 
   <div class="card">
     <h3>Presencia en Redes</h3>
-    <p>Alta</p>
+    <p id="presenciaRedes"></p>
   </div>
 
   <div class="card highlight">
     <h3>Público Objetivo</h3>
     <p>60% Mujeres</p>
   </div>
+
+</div>
+
 
 </div>
 {% endblock %}

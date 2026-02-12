@@ -1,3 +1,32 @@
+window.addEventListener("load", () => {
+  console.log("JS cargado");
+  console.log("Datos recibidos:", datosBackend);
+
+  if (Array.isArray(datosBackend) && datosBackend.length > 0) {
+    const ventasArray = datosBackend.map(f => f[2]);
+    const crecimientoArray = datosBackend.map(f => f[3]);
+
+    const totalVentas = ventasArray.reduce((a,b)=>a+b,0);
+    const promedioCrecimiento = Math.round(
+      crecimientoArray.reduce((a,b)=>a+b,0) / crecimientoArray.length
+    );
+
+    document.getElementById("totalVentas").innerText =
+      "$" + totalVentas.toLocaleString();
+    document.getElementById("promCrecimiento").innerText =
+      "+" + promedioCrecimiento + "%";
+  } else {
+    console.warn("datosBackend vacío o indefinido");
+  }
+
+  initVentasChart();
+  initPublicoChart();
+  initCrecimientoChart();
+  initRedesChart();
+});
+
+
+
 // ------------------------
 // BARRAS VENTAS ANIMADAS
 // ------------------------
@@ -6,8 +35,11 @@ function initVentasChart() {
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
-  const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
-  const ventas = [12000, 15000, 18000, 16000, 21000, 25000];
+ if (!datosBackend || datosBackend.length === 0) return;
+
+const meses = datosBackend.map(f => f[1]);
+const ventas = datosBackend.map(f => f[2]);
+
 
   const maxVenta = Math.max(...ventas);
   const chartHeight = 200;
@@ -77,7 +109,6 @@ function initVentasChart() {
 window.addEventListener("load", () => {
   initVentasChart();
 });
-
 // ------------------------
 // PASTEL PÚBLICO ANIMADO
 // ------------------------
@@ -93,10 +124,10 @@ function initPublicoChart() {
   const anguloMujeres = (mujeres / total) * 2 * Math.PI;
   const anguloHombres = (hombres / total) * 2 * Math.PI;
 
-  let progress = 0;          // 0–1
+  let progress = 0;
   let startTime = null;
-  const duration = 5000;     // 5 segundos para animar
-  const pause = 2000;        // 2 segundos de pausa al final
+  const duration = 5000;
+  const pause = 2000;
   
   function draw(progress) {
     publicoCtx.clearRect(0, 0, publicoCanvas.width, publicoCanvas.height);
@@ -137,8 +168,45 @@ function initPublicoChart() {
     }
   }
 
+  function drawLabels() {
+    const cx = 200;
+    const cy = 150;
+
+    // Mujeres 60%
+    publicoCtx.save();
+    publicoCtx.fillStyle = "#3d2f06";
+    publicoCtx.font = "bold 18px Arial";
+    publicoCtx.textAlign = "center";
+    publicoCtx.textBaseline = "middle";
+    publicoCtx.fillText("60%", cx - 45, cy - 25);
+    
+    // Hombres 40%
+    publicoCtx.fillStyle = "#333333";
+    publicoCtx.fillText("40%", cx + 45, cy + 25);
+    publicoCtx.restore();
+
+    // Etiquetas
+    publicoCtx.save();
+    publicoCtx.fillStyle = "#000";
+    publicoCtx.font = "14px Arial";
+    publicoCtx.textAlign = "center";
+    publicoCtx.textBaseline = "middle";
+    
+    publicoCtx.fillText("Mujeres", cx - 45, cy + 45);
+    publicoCtx.fillText("Hombres", cx + 45, cy - 45);
+    publicoCtx.restore();
+  }
+
+  // Dibuja etiquetas cuando termine la animación
+  setTimeout(() => {
+    drawLabels();
+    // Redibuja las etiquetas cada 30 segundos para que no se borren
+    setInterval(drawLabels, 30000);
+  }, 5200);
+
   requestAnimationFrame(animate);
 }
+
 
 // ------------------------
 // LÍNEA CRECIMIENTO ANIMADA
@@ -148,7 +216,7 @@ function initCrecimientoChart() {
   if (!crecimientoCanvas) return;
   const crecimientoCtx = crecimientoCanvas.getContext("2d");
 
-  const crecimiento = [5, 8, 12, 10, 15, 18];
+  const crecimiento = datosBackend.map(f => f[3]);
 
   let progress = 0;          // 0–1
   let startTime = null;
@@ -233,11 +301,26 @@ function initRedesChart() {
   if (!redesCanvas) return;
   const redesCtx = redesCanvas.getContext("2d");
 
-  const redes = [
-    { nombre: "Instagram", seguidores: 80 },
-    { nombre: "TikTok", seguidores: 65 },
-    { nombre: "Facebook", seguidores: 50 }
-  ];
+ const instagram = promedio(datosBackend.map(f => f[4]));
+const tiktok = promedio(datosBackend.map(f => f[5]));
+const facebook = promedio(datosBackend.map(f => f[6]));
+
+const presenciaEl = document.getElementById("presenciaRedes");
+  if (presenciaEl) {
+    const promedioTotal = Math.round((instagram + tiktok + facebook) / 3);
+    presenciaEl.innerText = promedioTotal + "% promedio";
+  }
+
+function promedio(arr){
+    return Math.round(arr.reduce((a,b)=>a+b,0)/arr.length);
+}
+
+const redes = [
+  { nombre: "Instagram", seguidores: instagram },
+  { nombre: "TikTok", seguidores: tiktok },
+  { nombre: "Facebook", seguidores: facebook }
+];
+
 
   const baseY = 300;
   const startX = 100;
